@@ -38,7 +38,7 @@ def predict():
     x = float(request.args.get("x", 0))
     w = float(request.args.get("w", 0))
     
-    y_pred = model.predict([[x, w]])[0]
+    y_pred = model.predict([[w, x]])[0]
     
     # Log prediction
     with open("output.txt", "w") as f:
