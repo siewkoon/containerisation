@@ -1,0 +1,57 @@
+a) Use linear regression to estimate the parameters α, τ, and β
+To estimate the parameters α (intercept), τ (treatment effect), and β (between sustainability spending and engagement score), an Ordinary Least Squares (OLS) regression model was used. The model specification is:
+
+{Engagement\ Score}_i=a+\tau\ \cdot\ {\rm Treatment}_i+\beta\cdot{Sustainability\ Spending}_i+\ \varepsilon_i
+
+The regression results show the following estimated coefficients:
+	α (Intercept) = 96.9965
+	τ (Treatment effect / ATE) = -9.0175
+	β (SustainabilitySpending) = 1.4712	
+
+These estimates were obtained using 20 observations and 2 predictors.
+
+b) Report the estimated ATE (\widehat{\tau\ }) and its statistical significance
+The estimated Average Treatment Effect (ATE), represented by \widehat{\tau\ }, is -9.0175. This means that, on average, receiving the treatment is associated with a 9.0175-point decrease in Engagement Score, holding Sustainability Spending constant.
+
+The p-value associated with this estimate is 0.001, which is well below conventional significance thresholds of 0.05. As such, it can be concluded that that the treatment effect is statistically significant.
+
+c) Briefly explain under what assumptions by  \widehat{\mathbf{\tau}\ } can be given a causal interpretation
+
+The estimated treatment effect by \widehat{\tau\ }can be interpreted causally if the following assumptions hold:
+
+1. Unconfoundedness (No omitted variable bias)
+The treatment assignment is independent of potential outcomes, conditional on the included covariates (e.g., Sustainability Spending). This means all confounders are accounted for in the model.
+
+2. No selection bias
+Individuals did not self-select into treatment based on expected outcomes. Ideally, treatment should be randomly assigned or selection into treatment is unrelated to unobserved factors that affect the outcome.
+
+3. Linearity and correct model specification
+The relationship between predictors and the outcome is linear, and the model includes all relevant covariates with no significant omitted variables or incorrect functional forms.
+
+4. Stable Unit Treatment Value Assumption
+The treatment of one unit does not affect the outcome of another (no interference), and the treatment is consistent across units.
+
+
+d) Explanation of each component in the setup
+
+1. app.py
+This is a simple Flask web application that loads a linear regression model trained on hardcoded data and exposes a /predict endpoint. It receives input values via query parameters, makes a prediction using the model, logs the result, and returns the output as JSON.
+
+2. Dockerfile
+The Dockerfile defines the environment needed to run the app, including the Python version, working directory, dependencies, and start command. It ensures the app can be built and run consistently across different machines by packaging everything in a container.
+
+3. requirements.txt
+This file lists all the Python dependencies required to run the application, including Flask for the web server and scikit-learn and NumPy for machine learning and numerical operations. It allows tools like pip to automatically install the correct versions, ensuring compatibility and reducing setup errors.
+
+Containerization improves reproducibility by encapsulating the code, dependencies, and environment settings into a single image. This eliminates “it works on my machine” issues and ensures the app behaves the same way in development, testing, and production.
+
+
+e) Test API using specified input values
+Input W=1, X=20
+
+The API was called using this curl command:
+curl --get --data-urlencode "x=20" --data-urlencode "w=1" http://localhost:5000/predict
+
+
+The API responded with the predicted engagement score:
+Predicted Y =  117.15789954
